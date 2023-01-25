@@ -239,3 +239,5 @@ NODE_PROP_FLOAT = 15
 NODE_PROP_INT = 16
 #: Property type represented with button widget in the properties bin.
 NODE_PROP_BUTTON = 17
+#: Property type represented with a ColorPicker widget in the properties bin.
+NODE_PROP_COLORPICKER4 = 18

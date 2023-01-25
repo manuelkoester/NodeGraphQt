@@ -283,6 +283,7 @@ if __name__ == '__main__':
                                        NODE_PROP_QCOMBO,
                                        NODE_PROP_QSPINBOX,
                                        NODE_PROP_COLORPICKER,
+                                       NODE_PROP_COLORPICKER4,
                                        NODE_PROP_SLIDER)
 
 
@@ -305,6 +306,8 @@ if __name__ == '__main__':
             self.create_property('range', 50,
                                  range=(45, 55),
                                  widget_type=NODE_PROP_SLIDER)
+            self.create_property('color_picker4', (255, 0, 0, 122),
+                                 widget_type=NODE_PROP_COLORPICKER4)
 
     def prop_changed(node_id, prop_name, prop_value):
         print('-'*100)

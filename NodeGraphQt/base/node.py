@@ -323,6 +323,7 @@ class NodeObject(object):
             - :attr:`NodeGraphQt.constants.NODE_PROP_QCHECKBOX`
             - :attr:`NodeGraphQt.constants.NODE_PROP_QSPINBOX`
             - :attr:`NodeGraphQt.constants.NODE_PROP_COLORPICKER`
+            - :attr:`NodeGraphQt.constants.NODE_PROP_COLORPICKER4`
             - :attr:`NodeGraphQt.constants.NODE_PROP_FILE`
             - :attr:`NodeGraphQt.constants.NODE_PROP_VECTOR2`
             - :attr:`NodeGraphQt.constants.NODE_PROP_VECTOR3`

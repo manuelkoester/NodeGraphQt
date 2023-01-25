@@ -10,6 +10,7 @@ from NodeGraphQt.constants import (NODE_PROP_QLABEL,
                                    NODE_PROP_QCHECKBOX,
                                    NODE_PROP_QSPINBOX,
                                    NODE_PROP_COLORPICKER,
+                                   NODE_PROP_COLORPICKER4,
                                    NODE_PROP_SLIDER,
                                    NODE_PROP_FILE,
                                    NODE_PROP_FILE_SAVE,
@@ -86,6 +87,73 @@ class PropColorPicker(BaseProperty):
 
     def get_value(self):
         return self._color[:3]
+
+    def set_value(self, value):
+        if value != self.get_value():
+            self._color = value
+            self._update_color()
+            self._update_vector()
+            self.value_changed.emit(self.toolTip(), value)
+
+
+class PropColorPicker4(BaseProperty):
+    """
+    Color4 (rgba) picker widget for a node property.
+    """
+    def __init__(self, parent=None):
+        super(PropColorPicker4, self).__init__(parent)
+        self._color = (0, 0, 0, 255)
+        self._button = QtWidgets.QPushButton()
+        self._vector = PropVector4()
+        self._vector.set_value([0, 0, 0, 255])
+        self._update_color()
+
+        self._button.clicked.connect(self._on_select_color)
+        self._vector.value_changed.connect(self._on_vector_changed)
+        layout = QtWidgets.QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self._button, 0, QtCore.Qt.AlignLeft)
+        layout.addWidget(self._vector, 1, QtCore.Qt.AlignLeft)
+
+    def _on_vector_changed(self, o, value):
+        self._color = tuple(value)
+        self._update_color()
+        self.value_changed.emit(self.toolTip(), value)
+
+    def _on_select_color(self):
+        color = QtWidgets.QColorDialog.getColor(
+            QtGui.QColor.fromRgbF(*self.get_value_alpha_01()),
+            options=QtWidgets.QColorDialog.ShowAlphaChannel,
+        )
+        if color.isValid():
+            self.set_value(color.getRgb())
+
+    def _update_vector(self):
+        self._vector.set_value(list(self._color))
+
+    def _update_color(self):
+        c = [int(max(min(i, 255), 0)) for i in self._color]
+        hex_color = "#{0:02x}{1:02x}{2:02x}{3:02x}".format(*c)
+        self._button.setStyleSheet(
+            '''
+            QPushButton {{background-color: rgba({0}, {1}, {2}, {3});}}
+            QPushButton::hover {{background-color: rgba({0}, {1}, {2}, {3});}}
+            '''.format(*c)
+        )
+        self._button.setToolTip(
+            "rgba: {}\nhex: {}".format(self._color, hex_color)
+        )
+
+    def get_value_alpha_01(self):
+        """
+        Get the value of the color with the alpha channel being remapped between 0 and 1.
+        This is needed for the QColor.fromRgbF function to work correctly.
+        See: https://doc.qt.io/qtforpython-5/PySide2/QtGui/QColor.html#PySide2.QtGui.PySide2.QtGui.QColor.fromRgbF
+        """
+        return (*self._color[:3], self._color[3]/255)
+
+    def get_value(self):
+        return self._color
 
     def set_value(self, value):
         if value != self.get_value():
@@ -761,6 +829,7 @@ WIDGET_MAP = {
     NODE_PROP_QCHECKBOX: PropCheckBox,
     NODE_PROP_QSPINBOX: PropSpinBox,
     NODE_PROP_COLORPICKER: PropColorPicker,
+    NODE_PROP_COLORPICKER4: PropColorPicker4,
     NODE_PROP_SLIDER: PropSlider,
 
     NODE_PROP_FILE: PropFilePath,
@@ -1055,6 +1124,8 @@ if __name__ == '__main__':
             self.create_property('text_edit', 'Test Text',
                                  widget_type=NODE_PROP_QTEXTEDIT,
                                  tab='text')
+            self.create_property('color_picker4', (255, 0, 0, 122),
+                                 widget_type=NODE_PROP_COLORPICKER4)
 
 
     def prop_changed(node_id, prop_name, prop_value):
