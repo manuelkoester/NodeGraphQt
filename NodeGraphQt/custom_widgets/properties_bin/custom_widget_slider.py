@@ -10,9 +10,11 @@ class PropSlider(BaseProperty):
     widget.
     """
 
-    def __init__(self, parent=None, disable_scroll=True):
+
+    def __init__(self, parent=None, disable_scroll=True, realtime_update=False):
         super(PropSlider, self).__init__(parent)
         self._block = False
+        self._realtime_update = realtime_update
         self._disable_scroll = disable_scroll
         self._slider = QtWidgets.QSlider()
         self._spinbox = QtWidgets.QSpinBox()
@@ -47,11 +49,14 @@ class PropSlider(BaseProperty):
         self._slider_mouse_press_event(event)
 
     def _on_slider_mouse_release(self, event):
-        self.value_changed.emit(self.toolTip(), self.get_value())
+        if not self._realtime_update:
+            self.value_changed.emit(self.toolTip(), self.get_value())
         self._block = False
 
     def _on_slider_changed(self, value):
         self._spinbox.setValue(value)
+        if self._realtime_update:
+            self.value_changed.emit(self.toolTip(), self.get_value())
 
     def _on_spnbox_changed(self, value):
         if value != self._slider.value():
@@ -111,9 +116,10 @@ class QDoubleSlider(QtWidgets.QSlider):
 
 
 class PropDoubleSlider(PropSlider):
-    def __init__(self, parent=None, disable_scroll=True, decimals=2):
+    def __init__(self, parent=None, decimals=2, disable_scroll=True, realtime_update=False):
         # Do not initialize Propslider, just its parents
         super(PropSlider, self).__init__(parent)
+        self._realtime_update = realtime_update
         self._block = False
         self._disable_scroll = disable_scroll
         self._slider = QDoubleSlider(decimals=decimals)
