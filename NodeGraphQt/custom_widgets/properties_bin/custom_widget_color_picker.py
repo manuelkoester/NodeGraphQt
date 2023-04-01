@@ -10,13 +10,14 @@ class PropColorPickerRGB(BaseProperty):
     Color picker widget for a node property.
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, realtime_update=False):
         super(PropColorPickerRGB, self).__init__(parent)
         self._color = (0, 0, 0)
         self._button = QtWidgets.QPushButton()
         self._vector = PropVector3()
         self._vector.set_value([0, 0, 0])
         self._update_color()
+        self._realtime_update = realtime_update
 
         self._button.clicked.connect(self._on_select_color)
         self._vector.value_changed.connect(self._on_vector_changed)
@@ -32,8 +33,18 @@ class PropColorPickerRGB(BaseProperty):
         self.value_changed.emit(self.toolTip(), value)
 
     def _on_select_color(self):
-        current_color = QtGui.QColor(*self.get_value())
-        color = QtWidgets.QColorDialog.getColor(current_color, self)
+        if self._realtime_update:
+            current_color = QtGui.QColor(*self.get_value())
+            self.color_dialog = QtWidgets.QColorDialog(current_color, self)
+            self.color_dialog.currentColorChanged.connect(self._on_current_color_changed)
+            self.color_dialog.show()
+        else:
+            current_color = QtGui.QColor(*self.get_value())
+            color = QtWidgets.QColorDialog.getColor(current_color, self)
+            if color.isValid():
+                self.set_value(color.getRgb())
+
+    def _on_current_color_changed(self, color):
         if color.isValid():
             self.set_value(color.getRgb())
 
@@ -69,13 +80,14 @@ class PropColorPickerRGBA(PropColorPickerRGB):
     Color4 (rgba) picker widget for a node property.
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, realtime_update=False):
         BaseProperty.__init__(self, parent)
         self._color = (0, 0, 0, 255)
         self._button = QtWidgets.QPushButton()
         self._vector = PropVector4()
         self._vector.set_value([0, 0, 0, 255])
         self._update_color()
+        self._realtime_update = realtime_update
 
         self._button.clicked.connect(self._on_select_color)
         self._vector.value_changed.connect(self._on_vector_changed)
