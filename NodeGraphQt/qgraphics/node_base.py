@@ -47,6 +47,12 @@ class NodeItem(AbstractNodeItem):
         self._proxy_mode = False
         self._proxy_mode_threshold = 70
 
+
+        # set custom colors
+        self.backgroundColor = "#111111"
+        self.titleBackground = "#07889e"
+
+
     def post_init(self, viewer, pos=None):
         """
         Called after node has been added into the scene.
@@ -73,7 +79,7 @@ class NodeItem(AbstractNodeItem):
         painter.setBrush(QtCore.Qt.NoBrush)
 
         # base background.
-        margin = 1.0
+        margin = 0
         rect = self.boundingRect()
         rect = QtCore.QRectF(rect.left() + margin,
                              rect.top() + margin,
@@ -81,7 +87,7 @@ class NodeItem(AbstractNodeItem):
                              rect.height() - (margin * 2))
 
         radius = 4.0
-        painter.setBrush(QtGui.QColor(*self.color))
+        painter.setBrush(QtGui.QColor(self.backgroundColor))
         painter.drawRoundedRect(rect, radius, radius)
 
         # light overlay on background when selected.
@@ -90,17 +96,24 @@ class NodeItem(AbstractNodeItem):
             painter.drawRoundedRect(rect, radius, radius)
 
         # node name background.
-        padding = 3.0, 2.0
+        padding = 0, 0
         text_rect = self._text_item.boundingRect()
         text_rect = QtCore.QRectF(text_rect.x() + padding[0],
                                   rect.y() + padding[1],
                                   rect.width() - padding[0] - margin,
                                   text_rect.height() - (padding[1] * 2))
-        if self.selected:
-            painter.setBrush(QtGui.QColor(*NodeEnum.SELECTED_COLOR.value))
-        else:
-            painter.setBrush(QtGui.QColor(0, 0, 0, 80))
+
+        text_rect2 = QtCore.QRectF(text_rect.x() + padding[0],
+                                  rect.y() + 3 + padding[1],
+                                  rect.width() - padding[0] - margin,
+                                  text_rect.height() - (padding[1] * 2))
+        # if self.selected:
+        #     painter.setBrush(QtGui.QColor(*NodeEnum.SELECTED_COLOR.value))
+        # else:
+        #     painter.setBrush(QtGui.QColor(0, 0, 0, 80))
+        painter.setBrush(QtGui.QColor(self.titleBackground))
         painter.drawRoundedRect(text_rect, 3.0, 3.0)
+        painter.drawRect(text_rect2)
 
         # node border
         if self.selected:
@@ -139,7 +152,7 @@ class NodeItem(AbstractNodeItem):
                              rect.height() - (margin * 2))
 
         radius = 4.0
-        painter.setBrush(QtGui.QColor(*self.color))
+        painter.setBrush(QtGui.QColor(self.backgroundColor))
         painter.drawRoundedRect(rect, radius, radius)
 
         # light overlay on background when selected.

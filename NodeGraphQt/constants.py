@@ -92,9 +92,9 @@ class ViewerNavEnum(Enum):
     :py:mod:`NodeGraphQt.constants.ViewerNavEnum`
     """
     #: default background color.
-    BACKGROUND_COLOR = (25, 25, 25)
+    BACKGROUND_COLOR = (24, 24, 24)
     #: default item color.
-    ITEM_COLOR = (35, 35, 35)
+    ITEM_COLOR = (36, 36, 36)
 
 # ==================================== NODE ====================================
 
@@ -111,9 +111,9 @@ class NodeEnum(Enum):
     #: default node icon size (WxH).
     ICON_SIZE = 18
     #: default node overlay color when selected.
-    SELECTED_COLOR = (255, 255, 255, 30)
+    SELECTED_COLOR = (255, 255, 255, 10)
     #: default node border color when selected.
-    SELECTED_BORDER_COLOR = (254, 207, 42, 255)
+    SELECTED_BORDER_COLOR = (255, 255, 255, 255)
 
 # ==================================== PORT ====================================
 
@@ -126,17 +126,17 @@ class PortEnum(Enum):
     #: default port size.
     SIZE = 22.0
     #: default port color. (r, g, b, a)
-    COLOR = (49, 115, 100, 255)
+    COLOR = (24, 152, 174, 255)
     #: default port border color.
-    BORDER_COLOR = (29, 202, 151, 255)
+    BORDER_COLOR = (24, 152, 174, 255)
     #: port color when selected.
-    ACTIVE_COLOR = (14, 45, 59, 255)
+    ACTIVE_COLOR = (255, 255, 255, 255)
     #: port border color when selected.
-    ACTIVE_BORDER_COLOR = (107, 166, 193, 255)
+    ACTIVE_BORDER_COLOR = (255, 255, 255, 255)
     #: port color on mouse over.
-    HOVER_COLOR = (17, 43, 82, 255)
+    HOVER_COLOR = (200, 200, 200, 255)
     #: port border color on mouse over.
-    HOVER_BORDER_COLOR = (136, 255, 35, 255)
+    HOVER_BORDER_COLOR = (200, 200, 200, 255)
     #: threshold for selecting a port.
     CLICK_FALLOFF = 15.0
 
@@ -162,13 +162,13 @@ class PipeEnum(Enum):
     #: default width.
     WIDTH = 1.2
     #: default color.
-    COLOR = (175, 95, 30, 255)
+    COLOR = (110, 110, 110, 255)
     #: pipe color to a node when it's disabled.
-    DISABLED_COLOR = (190, 20, 20, 255)
+    DISABLED_COLOR = (80, 80, 80, 255)
     #: pipe color when selected or mouse over.
-    ACTIVE_COLOR = (70, 255, 220, 255)
+    ACTIVE_COLOR = (255, 255, 255, 255)
     #: pipe color to a node when it's selected.
-    HIGHLIGHT_COLOR = (232, 184, 13, 255)
+    HIGHLIGHT_COLOR = (255, 255, 255, 255)
     #: draw connection as a line.
     DRAW_TYPE_DEFAULT = 0
     #: draw connection as dashed lines.
