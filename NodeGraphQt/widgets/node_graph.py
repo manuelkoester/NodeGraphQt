@@ -9,8 +9,9 @@ from NodeGraphQt.widgets.viewer_nav import NodeNavigationWidget
 
 class NodeGraphWidget(QtWidgets.QTabWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, graph=None):
         super(NodeGraphWidget, self).__init__(parent)
+        self._graph = graph
         self.setTabsClosable(True)
         self.setTabBarAutoHide(True)
         text_color = self.palette().text().color().getRgb()

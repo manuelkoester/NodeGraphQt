@@ -209,10 +209,12 @@ class NodeInputConnectedCmd(QtWidgets.QUndoCommand):
     def undo(self):
         node = self.source.node()
         node.on_input_disconnected(self.source, self.target)
+        self.target.node().on_output_disconnected(self.target, self.source)
 
     def redo(self):
         node = self.source.node()
         node.on_input_connected(self.source, self.target)
+        self.target.node().on_output_connected(self.target, self.source)
 
 
 class NodeInputDisconnectedCmd(QtWidgets.QUndoCommand):
@@ -236,10 +238,12 @@ class NodeInputDisconnectedCmd(QtWidgets.QUndoCommand):
     def undo(self):
         node = self.source.node()
         node.on_input_connected(self.source, self.target)
+        self.target.node().on_output_connected(self.target, self.source)
 
     def redo(self):
         node = self.source.node()
         node.on_input_disconnected(self.source, self.target)
+        self.target.node().on_output_disconnected(self.target, self.source)
 
 
 class PortConnectedCmd(QtWidgets.QUndoCommand):

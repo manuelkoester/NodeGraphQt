@@ -686,3 +686,32 @@ class BaseNode(NodeObject):
             out_port (NodeGraphQt.Port): output port that was disconnected.
         """
         return
+
+    def on_output_connected(self, out_port, in_port):
+        """
+        Callback triggered when a new pipe connection is made.
+
+        *The default of this function does nothing re-implement if you require
+        logic to run for this event.*
+
+        Note:
+            to work with undo & redo for this method re-implement
+            :meth:`BaseNode.on_input_disconnected` with the reverse logic.
+
+        """
+        return
+
+    def on_output_disconnected(self, out_port, in_port):
+        """
+        Callback triggered when a pipe connection has been disconnected
+        from a OUTPUT port.
+
+        *The default of this function does nothing re-implement if you require
+        logic to run for this event.*
+
+        Note:
+            to work with undo & redo for this method re-implement
+            :meth:`BaseNode.on_input_connected` with the reverse logic.
+
+        """
+        return

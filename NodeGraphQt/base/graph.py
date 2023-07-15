@@ -464,7 +464,7 @@ class NodeGraph(QtCore.QObject):
             NodeGraphWidget: node graph widget.
         """
         if self._widget is None:
-            self._widget = NodeGraphWidget()
+            self._widget = NodeGraphWidget(graph=self)
             self._widget.addTab(self._viewer, 'Node Graph')
             # hide the close button on the first tab.
             tab_bar = self._widget.tabBar()

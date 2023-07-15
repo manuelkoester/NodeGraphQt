@@ -135,7 +135,7 @@ class NodeGraphMenu(object):
                     QtCore.Qt.ALT + QtCore.Qt.Key_Return
                 )
             elif all([i in ['Return', 'Enter'] for i in shortcut.split('+')]):
-                shortcut = QtCore.Qt.Key_Return
+                shortcut = QtGui.QKeySequence(QtCore.Qt.Key_Return)
 
         if shortcut:
             action.setShortcut(shortcut)

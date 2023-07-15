@@ -55,7 +55,7 @@ class PortInputNode(BaseNode):
         super(PortInputNode, self).add_output(
             name=name,
             multi_output=multi_output,
-            display_name=False,
+            display_name=True,
             color=color,
             locked=locked,
             painter_func=None
