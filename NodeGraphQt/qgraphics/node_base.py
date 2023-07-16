@@ -111,9 +111,16 @@ class NodeItem(AbstractNodeItem):
         #     painter.setBrush(QtGui.QColor(*NodeEnum.SELECTED_COLOR.value))
         # else:
         #     painter.setBrush(QtGui.QColor(0, 0, 0, 80))
-        painter.setBrush(QtGui.QColor(self.titleBackground))
-        painter.drawRoundedRect(text_rect, 3.0, 3.0)
-        painter.drawRect(text_rect2)
+
+        if self.type_ not in ["Inputs.QxPortInputNode", "Outputs.QxPortOutputNode"]:
+            if self.type_ == "Other.QxGroupNode":
+                headerColor = QtGui.QColor(67, 75, 94)
+            else:                                       
+                headerColor = QtGui.QColor(self.titleBackground)
+
+            painter.setBrush(headerColor)
+            painter.drawRoundedRect(text_rect, 3.0, 3.0)
+            painter.drawRect(text_rect2)
 
         # node border
         if self.selected:
