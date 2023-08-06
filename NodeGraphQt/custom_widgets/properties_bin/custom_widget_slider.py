@@ -59,7 +59,9 @@ class PropSlider(BaseProperty):
 
     def _on_spnbox_changed(self, value):
         if value != self._slider.value():
+            self._slider.blockSignals(True)
             self._slider.setValue(value)
+            self._slider.blockSignals(False)
             if not self._block:
                 self.value_changed.emit(self.toolTip(), self.get_value())
 
@@ -70,6 +72,7 @@ class PropSlider(BaseProperty):
         if value != self.get_value():
             self._block = True
             self._spinbox.setValue(value)
+            self._slider.setValue(value)
             self.value_changed.emit(self.toolTip(), value)
             self._block = False
 
@@ -122,7 +125,7 @@ class PropDoubleSlider(PropSlider):
         self._realtime_update = realtime_update
         self._disable_scroll = disable_scroll
         self._slider = QDoubleSlider(decimals=decimals)
-        self._spinbox = QtWidgets.QDoubleSpinBox()
+        self._spinbox = PropDoubleSpinBox()
         self._init()
         self._init_signal_connections()
 
@@ -130,3 +133,19 @@ class PropDoubleSlider(PropSlider):
         self._spinbox.valueChanged.connect(self._on_spnbox_changed)
         # Connect to double_value_changed instead valueChanged
         self._slider.double_value_changed.connect(self._on_slider_changed)
+
+
+class PropDoubleSpinBox(QtWidgets.QDoubleSpinBox):
+    def __init__(self):
+        super(PropDoubleSpinBox, self).__init__()
+        self.setKeyboardTracking(False)
+
+    def valueFromText(self, text):
+        dp = self.locale().decimalPoint()
+        new_text = text.replace(",", dp).replace(".", dp)
+        return super(PropDoubleSpinBox, self).valueFromText(new_text)
+
+    def validate(self, text, pos):
+        dp = self.locale().decimalPoint()
+        new_text = text.replace(",", dp).replace(".", dp)
+        return super(PropDoubleSpinBox, self).validate(new_text, pos)
