@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from Qt import QtWidgets, QtCore
+from qtpy import QtWidgets, QtCore
 
 from .prop_widgets_abstract import BaseProperty
 
@@ -32,6 +32,7 @@ class PropSlider(BaseProperty):
         layout.addWidget(self._slider)
         # store the original press event.
         self._slider_mouse_press_event = self._slider.mousePressEvent
+        self._slider_mouse_release_event = self._slider.mouseReleaseEvent
         self._slider.mousePressEvent = self._on_slider_mouse_press
         self._slider.mouseReleaseEvent = self._on_slider_mouse_release
 
@@ -51,9 +52,12 @@ class PropSlider(BaseProperty):
         if not self._realtime_update:
             self.value_changed.emit(self.toolTip(), self.get_value())
         self._block = False
+        self._slider_mouse_release_event(event)
 
     def _on_slider_changed(self, value):
+        self._spinbox.blockSignals(True)
         self._spinbox.setValue(value)
+        self._spinbox.blockSignals(False)
         if self._realtime_update:
             self.value_changed.emit(self.toolTip(), self.get_value())
 
